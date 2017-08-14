@@ -262,6 +262,8 @@ static const char *validate_params(const game_params *params, bool full)
 	return "Mine count may not be negative";
     if (params->n > params->w * params->h - 9)
 	return "Too many mines for grid size";
+    if (params->n < 1)
+        return "Number of mines must be greater than zero";
 
     /*
      * FIXME: Need more constraints here. Not sure what the

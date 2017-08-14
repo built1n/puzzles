@@ -176,6 +176,8 @@ static const char *validate_params(const game_params *params, bool full)
 {
     if (params->w <= 0 || params->h <= 0)
 	return "Width and height must both be greater than zero";
+    if (params->w * params->w < 2)
+        return "Grid must contain at least two squares";
     return NULL;
 }
 

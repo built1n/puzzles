@@ -196,6 +196,8 @@ static const char *validate_params(const game_params *params, bool full)
         return "Minimum number of balls may not be greater than maximum";
     if (params->minballs >= params->w * params->h)
         return "Too many balls to fit in grid";
+    if (params->minballs < 1)
+        return "Number of balls must be at least one";
     return NULL;
 }
 
