@@ -1119,6 +1119,7 @@ static char *interpret_move(const game_state *state, game_ui *ui,
 
 	if (bestd <= DRAG_THRESHOLD * DRAG_THRESHOLD) {
 	    ui->dragpoint = best;
+	    ui->cursorpoint = -1;
 	    ui->newpoint.x = x;
 	    ui->newpoint.y = y;
 	    ui->newpoint.d = ds->tilesize;
@@ -1135,8 +1136,7 @@ static char *interpret_move(const game_state *state, game_ui *ui,
 	char buf[80];
 
 	ui->dragpoint = -1;	       /* terminate drag, no matter what */
-        ui->cursorpoint = -1;          /* also eliminate the cursor point */
-        
+
 	/*
 	 * First, see if we're within range. The user can cancel a
 	 * drag by dragging the point right off the window.
