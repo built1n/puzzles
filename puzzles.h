@@ -416,6 +416,10 @@ void draw_text_outline(drawing *dr, int x, int y, int fonttype,
  * less than buffer size. */
 void copy_left_justified(char *buf, size_t sz, const char *str);
 
+/* An ugly, but working float-to-string implementation for platforms
+ * that don't have one */
+int ftoa(char *buf, float f);
+
 /* Returns a generic label based on the value of `button.' To be used
    whenever a `label' field returned by the request_keys() game
    function is NULL. Dynamically allocated, to be freed by caller. */

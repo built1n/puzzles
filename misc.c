@@ -402,6 +402,12 @@ void copy_left_justified(char *buf, size_t sz, const char *str)
     buf[sz - 1] = 0;
 }
 
+/* another kludge for platforms without %g support in *printf() */
+int ftoa(char *buf, float f)
+{
+    return sprintf(buf, "%d.%06d", (int)f, abs((int)((f - (int)f)*1e6)));
+}
+
 /* Returns a dynamically allocated label for a generic button.
  * Game-specific buttons should go into the `label' field of key_label
  * instead. */
