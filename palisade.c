@@ -867,13 +867,14 @@ static char *game_text_format(const game_state *state)
 struct game_ui {
     int x, y;
     bool show;
+    bool fake_ctrl, fake_shift;
 };
 
 static game_ui *new_ui(const game_state *state)
 {
     game_ui *ui = snew(game_ui);
     ui->x = ui->y = 0;
-    ui->show = false;
+    ui->show = ui->fake_ctrl = ui->fake_shift = false;
     return ui;
 }
 
@@ -917,7 +918,10 @@ static char *interpret_move(const game_state *state, game_ui *ui,
                             const game_drawstate *ds, int x, int y, int button)
 {
     int w = state->shared->params.w, h = state->shared->params.h;
-    bool control = button & MOD_CTRL, shift = button & MOD_SHFT;
+    bool control = (button & MOD_CTRL) | ui->fake_ctrl, shift = (button & MOD_SHFT) | ui->fake_shift;
+
+    /* reset */
+    ui->fake_ctrl = ui->fake_shift = false;
 
     button &= ~MOD_MASK;
 
@@ -999,6 +1003,16 @@ static char *interpret_move(const game_state *state, game_ui *ui,
             move_cursor(button, &ui->x, &ui->y, w, h, false);
             return UI_UPDATE;
         }
+    }
+    else if(IS_CURSOR_SELECT(button)) {
+        /* CURSOR_SELECT or CURSOR_SELECT2 tells us to toggle whether
+         * the button press should be interpreted as having CTRL or
+         * shift pressed along with it, respectively. */
+        ui->show = true;
+        if(button == CURSOR_SELECT2)
+            ui->fake_shift = !ui->fake_shift;
+        else
+            ui->fake_ctrl = !ui->fake_ctrl;
     }
 
     return NULL;
