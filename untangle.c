@@ -1587,6 +1587,17 @@ static void game_get_cursor_location(const game_ui *ui,
                                      const game_params *params,
                                      int *x, int *y, int *w, int *h)
 {
+    if(ui->dragpoint >= 0 || ui->cursorpoint >= 0) {
+        int idx = (ui->dragpoint >= 0) ? ui->dragpoint : ui->cursorpoint;
+
+        int cx, cy;
+        cx = ds->x[idx];
+        cy = ds->y[idx];
+
+        *x = cx - CIRCLE_RADIUS;
+        *y = cy - CIRCLE_RADIUS;
+        *w = *h = 2 * CIRCLE_RADIUS + 1;
+    }
 }
 
 static int game_status(const game_state *state)
